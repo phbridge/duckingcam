@@ -21,14 +21,13 @@ def gen_frames():
             ret, buffer = cv2.imencode('.jpg', image2)
             image0 = buffer.tobytes()
             image2 = buffer.tobytes()
-            # yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n')
-            yield
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n')
 
 
 @app.route('/stream0')
 def stream0():
     gen_frames()
-    return Response(b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n', mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/stream2')
