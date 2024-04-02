@@ -9,6 +9,7 @@ camera2.release()
 
 app = Flask('hello')
 
+backup = [bytes(), bytes()]
 
 # def gen_frames0():
 #     global image0
@@ -24,25 +25,31 @@ app = Flask('hello')
 #             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n')
 
 
-def read_frames(camera):
+def read_frames(camera, backup_int):
     while True:
-        success, image = camera.retrieve()
-        if not success:
-            print("not success")
-        else:
-            ret, buffer = cv2.imencode('.jpg', image)
-            image = buffer.tobytes()
-            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
+        # success, image = camera.retrieve()
+        # if not success:
+        #     print("not success")
+        # else:
+        #     ret, buffer = cv2.imencode('.jpg', image)
+        #     image = buffer.tobytes()
+        #     yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
+
+        ret, buffer = cv2.imencode('.jpg', backup[backup_int])
+        image = buffer.tobytes()
+        yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
 
 
-def gen_frames(camera):
+def gen_frames(camera, backup_int):
+    global backup
     while True:
         success, image = camera.read()
         if not success:
             print("not success")
         else:
             ret, buffer = cv2.imencode('.jpg', image)
-            image = buffer.tobytes()
+            # image = buffer.tobytes()
+            backup[backup_int] = buffer.tobytes()
             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
 
 
