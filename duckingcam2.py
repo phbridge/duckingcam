@@ -4,6 +4,8 @@ import threading
 
 camera0 = cv2.VideoCapture(0)
 camera2 = cv2.VideoCapture(2)
+print(camera0.get(cv2.CAP_PROP_FPS))
+print(camera2.get(cv2.CAP_PROP_FPS))
 
 app = Flask('hello')
 
@@ -17,7 +19,7 @@ def gen_frames0():
         # print(time.time())
         success, _image0 = camera0.read()
         if not success:
-            print(" not success")
+            print("not success 0")
             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n')
         else:
             ret, buffer = cv2.imencode('.jpg', _image0)
@@ -32,7 +34,7 @@ def gen_frames2():
         # print(time.time())
         success, _image2 = camera2.read()
         if not success:
-            print(" not success")
+            print("not success 2")
             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image2 + b'\r\n')
         else:
             ret, buffer = cv2.imencode('.jpg', _image2)
