@@ -2,10 +2,12 @@ from flask import Flask, render_template, Response
 import cv2
 import threading
 
+
 app = Flask('hello')
+
+
 image0 = bytes()
 image2 = bytes()
-
 
 def gen_frames0():
     camera0 = cv2.VideoCapture(0)
@@ -20,6 +22,7 @@ def gen_frames0():
             image0 = buffer.tobytes()
 
 
+
 def gen_frames2():
     camera2 = cv2.VideoCapture(2)
     global image2
@@ -31,24 +34,17 @@ def gen_frames2():
         else:
             ret, buffer = cv2.imencode('.jpg', _image2)
             image2 = buffer.tobytes()
-
-
-def yield_cam_0():
-    yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n')
-
-
-def yield_cam_2():
-    yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image2 + b'\r\n')
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image2 + b'\r\n')
 
 
 @app.route('/stream0')
 def stream0():
-    return Response(yield_cam_0(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen_frames0(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/stream2')
 def stream2():
-    return Response(yield_cam_2(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen_frames2(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 # @app.route('/')
