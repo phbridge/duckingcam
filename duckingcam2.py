@@ -6,6 +6,10 @@ camera0 = cv2.VideoCapture(0)
 camera2 = cv2.VideoCapture(2)
 print(camera0.get(cv2.CAP_PROP_FPS))
 print(camera2.get(cv2.CAP_PROP_FPS))
+camera0.set(cv2.CAP_PROP_FPS, 30)
+camera2.set(cv2.CAP_PROP_FPS, 30)
+print(camera0.get(cv2.CAP_PROP_FPS))
+print(camera2.get(cv2.CAP_PROP_FPS))
 
 app = Flask('hello')
 
