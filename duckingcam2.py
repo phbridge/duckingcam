@@ -2,7 +2,7 @@ from flask import Flask, render_template, Response
 import cv2
 import threading
 
-camera0 = cv2.VideoCapture(0)
+camera0 = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 camera2 = cv2.VideoCapture(2)
 print(camera0.get(cv2.CAP_PROP_FPS))
 print(camera2.get(cv2.CAP_PROP_FPS))
@@ -12,10 +12,10 @@ print(camera2.get(cv2.CAP_PROP_FRAME_WIDTH))
 print(camera2.get(cv2.CAP_PROP_FRAME_HEIGHT))
 camera0.set(cv2.CAP_PROP_FPS, 30)
 camera2.set(cv2.CAP_PROP_FPS, 30)
-# camera0.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-# camera2.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
-# camera0.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-# camera2.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+camera0.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+camera2.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+camera0.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+camera2.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 print(camera0.get(cv2.CAP_PROP_FPS))
 print(camera2.get(cv2.CAP_PROP_FPS))
 print(camera0.get(cv2.CAP_PROP_FRAME_WIDTH))
