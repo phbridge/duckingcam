@@ -9,7 +9,7 @@ camera2.release()
 
 app = Flask('hello')
 
-backup = [bytes(), bytes()]
+backup = [bytes(), bytes(), bytes()]
 
 # def gen_frames0():
 #     global image0
@@ -57,10 +57,10 @@ def gen_frames(camera, backup_int):
 def stream0():
     print(camera0.isOpened())
     if camera0.isOpened():
-        return Response(read_frames(camera=camera0), mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(read_frames(camera=camera0, backup_int=0), mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         camera0.open(0)
-        return Response(gen_frames(camera=camera0), mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(gen_frames(camera=camera0, backup_int=0), mimetype='multipart/x-mixed-replace; boundary=frame')
     return "ERROR"
 
 
@@ -69,10 +69,10 @@ def stream2():
     global image2
     print(camera2.isOpened())
     if camera2.isOpened():
-        return Response(read_frames(camera=camera2), mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(read_frames(camera=camera2, backup_int=2), mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         camera2.open(2)
-        return Response(gen_frames(camera=camera2), mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(gen_frames(camera=camera2, backup_int=2), mimetype='multipart/x-mixed-replace; boundary=frame')
     return "ERROR"
 
 
