@@ -44,15 +44,15 @@ def read_frames(camera, backup_int):
 def gen_frames(camera, backup_int):
     global backup
     while True:
-        success, image = camera.read()
+        success, backup[backup_int] = camera.read()
         if not success:
             print("not success")
         else:
-            ret, buffer = cv2.imencode('.jpg', image)
+            ret, buffer = cv2.imencode('.jpg', backup[backup_int])
             # image = buffer.tobytes()
-            backup[backup_int] = buffer.tobytes()
+            image = buffer.tobytes()
             # yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
-            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + backup[backup_int] + b'\r\n')
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
 
 
 @app.route('/stream0')
