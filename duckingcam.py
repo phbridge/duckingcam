@@ -3,7 +3,7 @@ import cv2
 import threading
 
 app = Flask(__name__)
-lock = threading.Lock()
+lock = [threading.Lock(), threading.Lock(), threading.Lock(), threading.Lock()]
 
 
 @app.route('/stream0', methods=['GET'])
@@ -28,13 +28,16 @@ def stream3():
 
 def generate(cam_index=0):
     global lock
-    vc = cv2.VideoCapture(cam_index)
+    # vc = cv2.VideoCapture(cam_index)
+    vc = cv2.VideoCapture(cam_index, cv2.CAP_DSHOW)
+    vc = cv2.VideoCapture(cam_index, cv2.CAP_V4L)
+    vc = cv2.VideoCapture(cam_index, cv2.CAP_V4L2)
     if vc.isOpened():
         rval, frame = vc.read()
     else:
         rval = False
     while rval:
-        with lock:
+        with lock[cam_index]:
             rval, frame = vc.read()
             if frame is None:
                 continue
