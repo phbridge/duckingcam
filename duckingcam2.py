@@ -13,6 +13,7 @@ image2 = bytes()
 
 def gen_frames0():
     global image0
+    print(type(image0))
     while True:
         # print(time.time())
         success, _image0 = camera0.read()
@@ -22,6 +23,7 @@ def gen_frames0():
         else:
             ret, buffer = cv2.imencode('.jpg', _image0)
             image0 = buffer.tobytes()
+            print(type(image0))
             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n')
 
 
