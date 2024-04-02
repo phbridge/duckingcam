@@ -18,9 +18,11 @@ def gen_frames0():
         success, _image0 = camera0.read()
         if not success:
             print(" not success")
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n')
         else:
             ret, buffer = cv2.imencode('.jpg', _image0)
             image0 = buffer.tobytes()
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n')
 
 
 
@@ -31,6 +33,7 @@ def gen_frames2():
         success, _image2 = camera2.read()
         if not success:
             print(" not success")
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image2 + b'\r\n')
         else:
             ret, buffer = cv2.imencode('.jpg', _image2)
             image2 = buffer.tobytes()
