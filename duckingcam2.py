@@ -5,6 +5,7 @@ import threading
 cv2.CAP_GSTREAMER
 camera0 = cv2.VideoCapture(0)
 camera2 = cv2.VideoCapture(2)
+camera2.release()
 print(camera0.get(cv2.CAP_PROP_FPS))
 print(camera2.get(cv2.CAP_PROP_FPS))
 print(camera0.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -67,7 +68,6 @@ def stream0():
 @app.route('/stream2')
 def stream2():
     print(camera2.isOpened())
-    print(camera2.waitAny())
     return Response(gen_frames2(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
