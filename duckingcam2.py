@@ -7,7 +7,7 @@ camera = cv2.VideoCapture(0)  # CAP_DSHOW because of https://answers.opencv.org/
 
 def gen_frames():
     while True:
-        print(time.time())
+        # print(time.time())
         success, frame = camera.read()
         if not success:
             break
