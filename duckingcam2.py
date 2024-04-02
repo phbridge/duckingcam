@@ -27,7 +27,7 @@ def read_frames(camera):
     while True:
         success, image = camera.retrieve()
         if not success:
-            print("not success 2")
+            print("not success")
         else:
             ret, buffer = cv2.imencode('.jpg', image)
             image = buffer.tobytes()
@@ -38,7 +38,7 @@ def gen_frames(camera):
     while True:
         success, image = camera.read()
         if not success:
-            print("not success 2")
+            print("not success")
         else:
             ret, buffer = cv2.imencode('.jpg', image)
             image = buffer.tobytes()
@@ -68,21 +68,6 @@ def stream2():
     return "ERROR"
 
 
-# @app.route('/')
-# def index():
-#     return """
-# <body>
-# <div class="container">
-#     <div class="row">
-#         <div class="col-lg-8  offset-lg-2">
-#             <h3 class="mt-5">Live Streaming</h3>
-#             <img src="/stream0" width="100%">
-#         </div>
-#     </div>
-# </div>
-# </body>
-#     """
-
 # cam0thread = threading.Thread(target=lambda: gen_frames0())
 # cam0thread.start()
 # cam2thread = threading.Thread(target=lambda: gen_frames2())
@@ -93,5 +78,6 @@ host = "0.0.0.0"
 port = 8000
 debug = False
 options = None
-app.run(host, port, debug, options)
+threaded = True
+app.run(host, port, debug, options, threaded)
 
