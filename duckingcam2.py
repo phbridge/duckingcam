@@ -25,30 +25,30 @@ backup = [bytes(), bytes(), bytes()]
 #             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n')
 
 
-def read_frames(camera, backup_int):
+def read_frames(camera):
     while True:
-        # success, image = camera.retrieve()
-        # if not success:
-        #     print("not success")
-        # else:
-        #     ret, buffer = cv2.imencode('.jpg', image)
-        #     image = buffer.tobytes()
-        #     yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
-
-        ret, buffer = cv2.imencode('.jpg', backup[backup_int])
-        image = buffer.tobytes()
-        # yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
-        yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + backup[backup_int] + b'\r\n')
-
-
-def gen_frames(camera, backup_int):
-    global backup
-    while True:
-        success, backup[backup_int] = camera.read()
+        success, image = camera.retrieve()
         if not success:
             print("not success")
         else:
-            ret, buffer = cv2.imencode('.jpg', backup[backup_int])
+            ret, buffer = cv2.imencode('.jpg', image)
+            image = buffer.tobytes()
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
+
+        # ret, buffer = cv2.imencode('.jpg', backup[backup_int])
+        # image = buffer.tobytes()
+        # # yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
+        # yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + backup[backup_int] + b'\r\n')
+
+
+def gen_frames(camera):
+
+    while True:
+        success, image = camera.read()
+        if not success:
+            print("not success")
+        else:
+            ret, buffer = cv2.imencode('.jpg', image)
             # image = buffer.tobytes()
             image = buffer.tobytes()
             # yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
@@ -59,10 +59,10 @@ def gen_frames(camera, backup_int):
 def stream0():
     print(camera0.isOpened())
     if camera0.isOpened():
-        return Response(read_frames(camera=camera0, backup_int=0), mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(read_frames(camera=camera0), mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         camera0.open(0)
-        return Response(gen_frames(camera=camera0, backup_int=0), mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(gen_frames(camera=camera0), mimetype='multipart/x-mixed-replace; boundary=frame')
     return "ERROR"
 
 
@@ -71,10 +71,10 @@ def stream2():
     global image2
     print(camera2.isOpened())
     if camera2.isOpened():
-        return Response(read_frames(camera=camera2, backup_int=2), mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(read_frames(camera=camera2), mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         camera2.open(2)
-        return Response(gen_frames(camera=camera2, backup_int=2), mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(gen_frames(camera=camera2), mimetype='multipart/x-mixed-replace; boundary=frame')
     return "ERROR"
 
 
