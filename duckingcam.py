@@ -6,6 +6,9 @@ app = Flask(__name__)
 lock0 = threading.Lock()
 lock2 = threading.Lock()
 
+encodedImage0 = bytearray()
+encodedImage2 = bytearray()
+
 
 @app.route('/stream0', methods=['GET'])
 def stream0():
