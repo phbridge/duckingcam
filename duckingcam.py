@@ -46,7 +46,7 @@ def generate(cam_index=0):
 
 
 if __name__ == '__main__':
-    host = "127.0.0.1"
+    host = "192.168.128.140"
     port = 8000
     debug = False
     options = None
