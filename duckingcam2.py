@@ -8,33 +8,42 @@ image0 = bytes()
 image2 = bytes()
 
 
-def gen_frames():
-    global image0, image2
+def gen_frames0():
+    global image0
     while True:
         # print(time.time())
         success, image0 = camera0.read()
+        if not success:
+            print(" not success")
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n')
+        else:
+            ret, buffer = cv2.imencode('.jpg', image0)
+            image0 = buffer.tobytes()
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n')
+
+
+def gen_frames2():
+    global image2
+    while True:
+        # print(time.time())
         success, image2 = camera2.read()
         if not success:
             print(" not success")
-            break
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image2 + b'\r\n')
         else:
-            ret, buffer = cv2.imencode('.jpg', image0)
             ret, buffer = cv2.imencode('.jpg', image2)
-            image0 = buffer.tobytes()
             image2 = buffer.tobytes()
-            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n')
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image2 + b'\r\n')
 
 
 @app.route('/stream0')
 def stream0():
-    gen_frames()
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen_frames0(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/stream2')
 def stream2():
-    gen_frames()
-    return Response(b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image2 + b'\r\n', mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen_frames2(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 # @app.route('/')
