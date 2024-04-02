@@ -45,6 +45,18 @@ def gen_frames0():
             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n')
 
 
+def read_frames2():
+    while True:
+        # print(time.time())
+        success, _image2 = camera2.retrieve()
+        if not success:
+            print("not success 2")
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image2 + b'\r\n')
+        else:
+            ret, buffer = cv2.imencode('.jpg', _image2)
+            _image2 = buffer.tobytes()
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + _image2 + b'\r\n')
+
 
 def gen_frames2():
     global image2
@@ -69,7 +81,7 @@ def stream0():
 def stream2():
     print(camera2.isOpened())
     if camera2.isOpened():
-        return Response(gen_frames2(), mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(read_frames2(), mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         camera2.open(2)
         return Response(gen_frames2(), mimetype='multipart/x-mixed-replace; boundary=frame')
