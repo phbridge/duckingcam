@@ -16,6 +16,16 @@ def stream1():
     return Response(generate(cam_index=1), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
+@app.route('/stream2', methods=['GET'])
+def stream2():
+    return Response(generate(cam_index=1), mimetype="multipart/x-mixed-replace; boundary=frame")
+
+
+@app.route('/stream3', methods=['GET'])
+def stream3():
+    return Response(generate(cam_index=1), mimetype="multipart/x-mixed-replace; boundary=frame")
+
+
 def generate(cam_index=0):
     global lock
     vc = cv2.VideoCapture(cam_index)
