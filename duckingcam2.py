@@ -26,13 +26,15 @@ def gen_frames():
 
 
 @app.route('/stream0')
-def video_feed():
+def stream0():
+    gen_frames()
     return Response(b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n', mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/stream2')
-def video_feed():
-    return Response(b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image0 + b'\r\n', mimetype='multipart/x-mixed-replace; boundary=frame')
+def stream2():
+    gen_frames()
+    return Response(b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image2 + b'\r\n', mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 # @app.route('/')
