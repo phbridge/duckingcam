@@ -2,6 +2,8 @@ from flask import Flask, render_template, Response
 import cv2
 import threading
 
+camera0 = cv2.VideoCapture(0)
+camera2 = cv2.VideoCapture(2)
 
 app = Flask('hello')
 
@@ -10,7 +12,6 @@ image0 = bytes()
 image2 = bytes()
 
 def gen_frames0():
-    camera0 = cv2.VideoCapture(0)
     global image0
     while True:
         # print(time.time())
@@ -24,7 +25,6 @@ def gen_frames0():
 
 
 def gen_frames2():
-    camera2 = cv2.VideoCapture(2)
     global image2
     while True:
         # print(time.time())
