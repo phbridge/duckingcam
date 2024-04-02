@@ -29,6 +29,7 @@ def stream2():
 
 def generate(cam_index=0):
     global lock0
+    print(lock0)
     vc = cv2.VideoCapture(0)
     # vc = cv2.VideoCapture(cam_index, cv2.CAP_DSHOW)
     # vc = cv2.VideoCapture(cam_index, cv2.CAP_V4L)
@@ -53,8 +54,9 @@ def generate(cam_index=0):
 def generate2(cam_index=2):
     global lock2
     global encodedImage2
+    print(lock2)
     if not lock2.locked():
-        vc = cv2.VideoCapture(0)
+        vc = cv2.VideoCapture(2)
     # vc = cv2.VideoCapture(cam_index, cv2.CAP_DSHOW)
     # vc = cv2.VideoCapture(cam_index, cv2.CAP_V4L)
     # vc = cv2.VideoCapture(cam_index, cv2.CAP_V4L2)
