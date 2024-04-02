@@ -7,9 +7,9 @@ camera2 = cv2.VideoCapture(2)
 
 app = Flask('hello')
 
-
 image0 = bytes()
 image2 = bytes()
+
 
 def gen_frames0():
     global image0
@@ -65,10 +65,10 @@ def stream2():
 # </body>
 #     """
 
-cam0thread = threading.Thread(target=lambda: gen_frames0())
-cam0thread.start()
-cam2thread = threading.Thread(target=lambda: gen_frames2())
-cam2thread.start()
+# cam0thread = threading.Thread(target=lambda: gen_frames0())
+# cam0thread.start()
+# cam2thread = threading.Thread(target=lambda: gen_frames2())
+# cam2thread.start()
 
 
 host = "0.0.0.0"
