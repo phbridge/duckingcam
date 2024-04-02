@@ -50,7 +50,8 @@ def gen_frames(camera, backup_int):
             ret, buffer = cv2.imencode('.jpg', image)
             # image = buffer.tobytes()
             backup[backup_int] = buffer.tobytes()
-            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
+            # yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + backup[backup_int] + b'\r\n')
 
 
 @app.route('/stream0')
