@@ -94,7 +94,7 @@ debug = False
 options = None
 threaded = True
 processes = 4
-app.run(host, port, debug, processes=4)
+app.run(host, port, debug, threaded=False, processes=4)
 # http_server = wsgiserver.WSGIServer(host=host, port=port, wsgi_app=app)
 # http_server.start()
 
