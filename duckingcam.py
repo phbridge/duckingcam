@@ -3,7 +3,7 @@ import cv2
 import threading
 
 app = Flask(__name__)
-lock = [threading.Lock(), threading.Lock(), threading.Lock(), threading.Lock()]
+lock = threading.Lock()
 
 
 @app.route('/stream0', methods=['GET'])
@@ -18,12 +18,12 @@ def stream1():
 
 @app.route('/stream2', methods=['GET'])
 def stream2():
-    return Response(generate(cam_index=1), mimetype="multipart/x-mixed-replace; boundary=frame")
+    return Response(generate(cam_index=2), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
 @app.route('/stream3', methods=['GET'])
 def stream3():
-    return Response(generate(cam_index=1), mimetype="multipart/x-mixed-replace; boundary=frame")
+    return Response(generate(cam_index=3), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
 def generate(cam_index=0):
@@ -37,7 +37,7 @@ def generate(cam_index=0):
     else:
         rval = False
     while rval:
-        with lock[cam_index]:
+        with lock:
             rval, frame = vc.read()
             if frame is None:
                 continue
@@ -49,8 +49,9 @@ def generate(cam_index=0):
 
 
 if __name__ == '__main__':
-    host = "192.168.128.140"
+    host = "0.0.0.0"
     port = 8000
     debug = False
     options = None
     app.run(host, port, debug, options)
+
