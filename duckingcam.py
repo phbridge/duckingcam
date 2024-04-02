@@ -28,10 +28,10 @@ def stream3():
 
 def generate(cam_index=0):
     global lock
-    # vc = cv2.VideoCapture(cam_index)
-    vc = cv2.VideoCapture(cam_index, cv2.CAP_DSHOW)
-    vc = cv2.VideoCapture(cam_index, cv2.CAP_V4L)
-    vc = cv2.VideoCapture(cam_index, cv2.CAP_V4L2)
+    vc = cv2.VideoCapture(cam_index)
+    # vc = cv2.VideoCapture(cam_index, cv2.CAP_DSHOW)
+    # vc = cv2.VideoCapture(cam_index, cv2.CAP_V4L)
+    # vc = cv2.VideoCapture(cam_index, cv2.CAP_V4L2)
     if vc.isOpened():
         rval, frame = vc.read()
     else:
