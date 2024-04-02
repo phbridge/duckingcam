@@ -1,7 +1,8 @@
 from flask import Flask, render_template, Response
 import cv2, time
+
 app = Flask('hello')
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # CAP_DSHOW because of https://answers.opencv.org/question/234933/opencv-440modulesvideoiosrccap_msmfcpp-682-cvcapture_msmfinitstream-failed-to-set-mediatype-stream-0-640x480-30-mfvideoformat_rgb24unsupported-media/
 
 
 def gen_frames():
@@ -16,7 +17,7 @@ def gen_frames():
             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-@app.route('/video_feed')
+@app.route('/stream0')
 def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
@@ -35,4 +36,12 @@ def index():
 </div>
 </body>        
     """
-app.run(debug=True)
+
+
+
+host = "0.0.0.0"
+port = 8000
+debug = False
+options = None
+app.run(host, port, debug, options)
+
