@@ -26,6 +26,22 @@ def stream3():
     return Response(generate(cam_index=3), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
+@app.route('/')
+def index():
+    return """
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8  offset-lg-2">
+            <h3 class="mt-5">Live Streaming</h3>
+            <img src="/video_feed" width="100%">
+        </div>
+    </div>
+</div>
+</body>        
+    """
+
+
 def generate(cam_index=0):
     global lock
     vc = cv2.VideoCapture(cam_index)
@@ -36,14 +52,15 @@ def generate(cam_index=0):
         rval, frame = vc.read()
     else:
         rval = False
+        print(" is false")
     while rval:
-        with lock:
-            rval, frame = vc.read()
-            if frame is None:
-                continue
-            (flag, encodedImage) = cv2.imencode(".jpg", frame)
-            if not flag:
-                continue
+        # with lock:
+        rval, frame = vc.read()
+        if frame is None:
+            continue
+        (flag, encodedImage) = cv2.imencode(".jpg", frame)
+        if not flag:
+            continue
         yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n')
     vc.release()
 
