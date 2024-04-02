@@ -66,6 +66,7 @@ def stream0():
 
 @app.route('/stream2')
 def stream2():
+    print(camera2.isOpened())
     return Response(gen_frames2(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
