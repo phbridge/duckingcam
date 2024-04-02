@@ -2,7 +2,7 @@ from flask import Flask, render_template, Response
 import cv2
 import threading
 
-camera0 = cv2.VideoCapture(0, cv2.CAP_FFMPEG)
+camera0 = cv2.VideoCapture(0)
 camera2 = cv2.VideoCapture(2)
 print(camera0.get(cv2.CAP_PROP_FPS))
 print(camera2.get(cv2.CAP_PROP_FPS))
