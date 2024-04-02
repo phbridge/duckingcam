@@ -1,5 +1,6 @@
 from flask import Flask, render_template, Response
 import cv2
+import wsgiserver
 
 camera0 = cv2.VideoCapture(0)
 camera0.release()
@@ -79,5 +80,7 @@ port = 8000
 debug = False
 options = None
 threaded = True
-app.run(host, port, debug, threaded)
+# app.run(host, port, debug, threaded)
+http_server = wsgiserver.WSGIServer(host=host, port=port, wsgi_app=app)
+http_server.start()
 
