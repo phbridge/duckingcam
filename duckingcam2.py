@@ -31,7 +31,9 @@ def read_frames(camera):
         if not success:
             print("not success")
         else:
-            ret, buffer = cv2.imencode('.jpg', image)
+            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
+            # ret, buffer = cv2.imencode('.jpg', image)
+            ret, buffer = cv2.imencode('.jpg', image, encode_param)
             image = buffer.tobytes()
             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
 
@@ -48,7 +50,9 @@ def gen_frames(camera):
         if not success:
             print("not success")
         else:
-            ret, buffer = cv2.imencode('.jpg', image)
+            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
+            # ret, buffer = cv2.imencode('.jpg', image)
+            ret, buffer = cv2.imencode('.jpg', image, encode_param)
             # image = buffer.tobytes()
             image = buffer.tobytes()
             # yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
