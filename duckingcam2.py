@@ -1,5 +1,5 @@
 from flask import Flask, render_template, Response
-import cv2, time
+import cv2
 
 app = Flask('hello')
 camera0 = cv2.VideoCapture(0)  # CAP_DSHOW because of https://answers.opencv.org/question/234933/opencv-440modulesvideoiosrccap_msmfcpp-682-cvcapture_msmfinitstream-failed-to-set-mediatype-stream-0-640x480-30-mfvideoformat_rgb24unsupported-media/
@@ -15,6 +15,7 @@ def gen_frames():
         success, image0 = camera0.read()
         success, image2 = camera2.read()
         if not success:
+            print(" not success")
             break
         else:
             ret, buffer = cv2.imencode('.jpg', image0)
