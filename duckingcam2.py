@@ -53,7 +53,7 @@ def gen_always():
     global camera2
     while True:
         camera0.open(0)
-        camera2.open(0)
+        camera2.open(2)
         camera0.grab()
         camera2.grab()
         time.sleep(0.05)
