@@ -74,18 +74,17 @@ def gen_frames(camera):
 
 @app.route('/stream0')
 def stream0():
-    # print(camera0.isOpened())
-    # if camera0.isOpened():
-    #     return Response(read_frames(camera=camera0), mimetype='multipart/x-mixed-replace; boundary=frame')
-    # else:
-    #     camera0.open(0)
-    #     return Response(gen_frames(camera=camera0), mimetype='multipart/x-mixed-replace; boundary=frame')
-    return Response(read_frames(camera=camera0), mimetype='multipart/x-mixed-replace; boundary=frame')
+    print(camera0.isOpened())
+    if camera0.isOpened():
+        return Response(read_frames(camera=camera0), mimetype='multipart/x-mixed-replace; boundary=frame')
+    else:
+        camera0.open(0)
+        return Response(gen_frames(camera=camera0), mimetype='multipart/x-mixed-replace; boundary=frame')
+    # return Response(read_frames(camera=camera0), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/stream2')
 def stream2():
-    global image2
     print(camera2.isOpened())
     if camera2.isOpened():
         return Response(read_frames(camera=camera2), mimetype='multipart/x-mixed-replace; boundary=frame')
