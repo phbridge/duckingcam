@@ -74,7 +74,7 @@ port = 8000
 app.run(host=host, port=port)
 
 
-# http_server = wsgiserver.WSGIServer(host=host, port=port, wsgi_app=app)
-# http_server.start()
+http_server = wsgiserver.WSGIServer(host=host, port=port, wsgi_app=app)
+http_server.start()
 
 
