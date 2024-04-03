@@ -2,7 +2,6 @@ from flask import Flask, Response
 import cv2
 import wsgiserver
 import time
-import threading
 
 camera0 = cv2.VideoCapture(0, cv2.CAP_GSTREAMER)
 camera0.release()
@@ -48,16 +47,6 @@ def gen_frames(camera):
             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
 
 
-def gen_always():
-    global camera0
-    global camera2
-    while True:
-        camera0.open(0)
-        camera2.open(2)
-        camera0.grab()
-        camera2.grab()
-        time.sleep(0.05)
-
 
 @app.route('/stream0')
 def stream0():
@@ -79,13 +68,10 @@ def stream2():
         return Response(gen_frames(camera=camera2), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-gen_always_thread = threading.Thread(target=lambda: gen_always())
-gen_always_thread.start()
-
 
 host = "0.0.0.0"
 port = 8000
-app.run(host=host, port=port, debug=True)
+app.run(host=host, port=port)
 
 
 # http_server = wsgiserver.WSGIServer(host=host, port=port, wsgi_app=app)
