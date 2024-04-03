@@ -16,10 +16,10 @@ def read_frames(camera):
     while True:
         time.sleep(0.1)
         if last_image == camera.get(cv2.CAP_PROP_POS_MSEC):
-            success, image = camera.read()
+            camera.grab()
         else:
-            success, image = camera.retrieve()
             last_image = camera.get(cv2.CAP_PROP_POS_MSEC)
+        success, image = camera.retrieve()
         if not success:
             print("not success read")
         else:
@@ -30,16 +30,34 @@ def read_frames(camera):
 
 
 def gen_frames(camera):
+    last_image = camera.get(cv2.CAP_PROP_POS_MSEC)
     while True:
         time.sleep(0.1)
-        success, image = camera.read()
+        if last_image == camera.get(cv2.CAP_PROP_POS_MSEC):
+            camera.grab()
+        else:
+            last_image = camera.get(cv2.CAP_PROP_POS_MSEC)
+        success, image = camera.retrieve()
         if not success:
-            print("not success gen")
+            print("not success read")
         else:
             encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
             ret, buffer = cv2.imencode('.jpg', image, encode_param)
             image = buffer.tobytes()
             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
+
+
+# def gen_frames(camera):
+#     while True:
+#         time.sleep(0.1)
+#         success, image = camera.read()
+#         if not success:
+#             print("not success gen")
+#         else:
+#             encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
+#             ret, buffer = cv2.imencode('.jpg', image, encode_param)
+#             image = buffer.tobytes()
+#             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
 
 
 @app.route('/stream0')
