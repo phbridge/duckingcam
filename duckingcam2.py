@@ -12,11 +12,14 @@ app = Flask('hello')
 
 
 def read_frames(camera):
+    last_image = camera.get(cv2.CAP_PROP_POS_MSEC)
     while True:
         time.sleep(0.1)
-        success, image = camera.retrieve()
-        print(camera.get(cv2.CAP_PROP_POS_FRAMES))
-        print(camera.get(cv2.CAP_PROP_POS_MSEC))
+        if last_image == camera.get(cv2.CAP_PROP_POS_MSEC):
+            success, image = camera.read()
+        else:
+            success, image = camera.retrieve()
+            last_image = camera.get(cv2.CAP_PROP_POS_MSEC)
         if not success:
             print("not success read")
         else:
