@@ -2,6 +2,7 @@ from flask import Flask, render_template, Response
 import cv2
 import wsgiserver
 import time
+import threading
 
 camera0 = cv2.VideoCapture(0, cv2.CAP_GSTREAMER)
 camera0.release()
@@ -46,6 +47,15 @@ def read_frames(camera):
         # yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + backup[backup_int] + b'\r\n')
 
 
+def gen_frames_only():
+    while True:
+        # success, image = camera0.grab()
+        # success, image = camera2.grab()
+        camera0.grab()
+        camera2.grab()
+        time.sleep(0.03)
+
+
 def gen_frames(camera):
     while True:
         success, image = camera.read()
@@ -84,10 +94,8 @@ def stream2():
     return "ERROR"
 
 
-# cam0thread = threading.Thread(target=lambda: gen_frames0())
-# cam0thread.start()
-# cam2thread = threading.Thread(target=lambda: gen_frames2())
-# cam2thread.start()
+camgrab = threading.Thread(target=lambda: gen_frames_only())
+camgrab.start()
 
 
 host = "0.0.0.0"
