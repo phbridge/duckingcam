@@ -1,91 +1,80 @@
 from flask import Flask, Response
 import cv2
-import threading
+import wsgiserver
+import time
 
-app = Flask(__name__)
-lock0 = threading.Lock()
-lock2 = threading.Lock()
+camera = cv2.VideoCapture(0, cv2.CAP_GSTREAMER)
+camera.release()
+# camera2 = cv2.VideoCapture(2, cv2.CAP_GSTREAMER)
+# camera2.release()
 
-encodedImage0 = bytearray()
-encodedImage2 = bytearray()
-
-
-@app.route('/stream0', methods=['GET'])
-def stream0():
-    return Response(generate(cam_index=0), mimetype="multipart/x-mixed-replace; boundary=frame")
+app = Flask('hello')
 
 
-# @app.route('/stream1', methods=['GET'])
-# def stream1():
-#     return Response(generate(cam_index=1), mimetype="multipart/x-mixed-replace; boundary=frame")
+#
+# def read_frames(camera):
+#     last_image = camera.get(cv2.CAP_PROP_POS_MSEC)
+#     while True:
+#         if last_image == camera.get(cv2.CAP_PROP_POS_MSEC):
+#             success, image = camera.read()
+#         else:
+#             last_image = camera.get(cv2.CAP_PROP_POS_MSEC)
+#             time.sleep(0.1)
+#             success, image = camera.retrieve()
+#         if not success:
+#             print("not success read")
+#         else:
+#             encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
+#             ret, buffer = cv2.imencode('.jpg', image, encode_param)
+#             image = buffer.tobytes()
+#             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
 
 
-@app.route('/stream2', methods=['GET'])
-def stream2():
-    return Response(generate2(cam_index=2), mimetype="multipart/x-mixed-replace; boundary=frame")
-
-
-# @app.route('/stream3', methods=['GET'])
-# def stream3():
-#     return Response(generate(cam_index=3), mimetype="multipart/x-mixed-replace; boundary=frame")
-
-
-def generate(cam_index=0):
-    global lock0
-    print(lock0)
-    vc = cv2.VideoCapture(0)
-    # vc = cv2.VideoCapture(cam_index, cv2.CAP_DSHOW)
-    # vc = cv2.VideoCapture(cam_index, cv2.CAP_V4L)
-    # vc = cv2.VideoCapture(cam_index, cv2.CAP_V4L2)
-    if vc.isOpened():
-        rval, frame = vc.read()
-    else:
-        rval = False
-        print(" is false")
-    while rval:
-        # with lock:
-        rval, frame = vc.read()
-        if frame is None:
-            continue
-        (flag, encodedImage) = cv2.imencode(".jpg", frame)
-        if not flag:
-            continue
-        yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n')
-    vc.release()
-
-
-def generate2(cam_index=2):
-    global lock2
-    global encodedImage2
-    print(lock2)
-    if not lock2.locked():
-        vc = cv2.VideoCapture(2)
-    # vc = cv2.VideoCapture(cam_index, cv2.CAP_DSHOW)
-    # vc = cv2.VideoCapture(cam_index, cv2.CAP_V4L)
-    # vc = cv2.VideoCapture(cam_index, cv2.CAP_V4L2)
-        if vc.isOpened():
-            rval, frame = vc.read()
+def _gen_frames(_camera):
+    last_image = _camera.get(cv2.CAP_PROP_POS_MSEC)
+    while True:
+        if last_image == _camera.get(cv2.CAP_PROP_POS_MSEC):
+            success, image = _camera.read()
         else:
-            rval = False
-            print(" is false")
-        while rval:
-            # with lock:
-            rval, frame = vc.read()
-            if frame is None:
-                continue
-            (flag, encodedImage2) = cv2.imencode(".jpg", frame)
-            if not flag:
-                continue
-            yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + bytearray(encodedImage2) + b'\r\n')
-        vc.release()
-    else:
-        yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + bytearray(encodedImage2) + b'\r\n')
+            last_image = _camera.get(cv2.CAP_PROP_POS_MSEC)
+            time.sleep(0.1)
+            success, image = _camera.retrieve()
+        if not success:
+            print("not success read")
+        else:
+            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
+            ret, buffer = cv2.imencode('.jpg', image, encode_param)
+            image = buffer.tobytes()
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
 
 
-if __name__ == '__main__':
-    host = "0.0.0.0"
-    port = 8000
-    debug = False
-    options = None
-    app.run(host, port, debug, options)
+
+
+@app.route('/stream0')
+def stream0():
+    print(camera.isOpened())
+    if not camera.isOpened():
+        camera.open(0)
+    return Response(_gen_frames(_camera=camera), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+# @app.route('/stream2')
+# def stream2():
+#     print(camera2.isOpened())
+#     if camera2.isOpened():
+#         return Response(read_frames(camera=camera2), mimetype='multipart/x-mixed-replace; boundary=frame')
+#     else:
+#         camera2.open(2)
+#         return Response(gen_frames(camera=camera2), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+
+host = "0.0.0.0"
+port = 8000
+app.run(host=host, port=port)
+
+
+# http_server = wsgiserver.WSGIServer(host=host, port=port, wsgi_app=app)
+# http_server.start()
+
 
