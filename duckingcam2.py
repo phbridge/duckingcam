@@ -68,7 +68,7 @@ def stream2():
 
 host = "0.0.0.0"
 port = 8002
-app.run(host=host, port=port)
+app.run(host=host, port=port, debug=True)
 
 
 # http_server = wsgiserver.WSGIServer(host=host, port=port, wsgi_app=app)
