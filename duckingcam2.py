@@ -9,10 +9,10 @@ camera0.release()
 camera2 = cv2.VideoCapture(2, cv2.CAP_GSTREAMER)
 camera2.release()
 
-cv2.VideoWriter()
+
 app = Flask('hello')
 
-backup = [bytes(), bytes(), bytes()]
+# backup = [bytes(), bytes(), bytes()]
 
 # def gen_frames0():
 #     global image0
@@ -51,8 +51,8 @@ def gen_frames_only():
     while True:
         # success, image = camera0.grab()
         # success, image = camera2.grab()
-        camera0.grab()
-        camera2.grab()
+        camera0.read()
+        camera2.read()
         time.sleep(0.03)
 
 
@@ -92,6 +92,7 @@ def stream2():
         camera2.open(2)
         return Response(gen_frames(camera=camera2), mimetype='multipart/x-mixed-replace; boundary=frame')
     return "ERROR"
+
 
 
 camgrab = threading.Thread(target=lambda: gen_frames_only())
