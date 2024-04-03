@@ -46,14 +46,14 @@ def read_frames(camera):
         # # yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
         # yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + backup[backup_int] + b'\r\n')
 
-
-def gen_frames_only():
-    while True:
-        # success, image = camera0.grab()
-        # success, image = camera2.grab()
-        camera0.read()
-        camera2.read()
-        time.sleep(0.03)
+#
+# def gen_frames_only():
+#     while True:
+#         # success, image = camera0.grab()
+#         # success, image = camera2.grab()
+#         camera0.read()
+#         camera2.read()
+#         time.sleep(0.03)
 
 
 def gen_frames(camera):
