@@ -31,7 +31,7 @@ def gen_frames(camera):
         if not success:
             print("not success gen")
         else:
-            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 95]
+            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
             ret, buffer = cv2.imencode('.jpg', image, encode_param)
             image = buffer.tobytes()
             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
