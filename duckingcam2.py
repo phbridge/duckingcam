@@ -15,6 +15,8 @@ def read_frames(camera):
     while True:
         time.sleep(0.1)
         success, image = camera.retrieve()
+        print(camera.get(cv2.CAP_PROP_POS_FRAMES))
+        print(camera.get(cv2.CAP_PROP_POS_MSEC))
         if not success:
             print("not success read")
         else:
@@ -59,6 +61,8 @@ def stream2():
 
 host = "0.0.0.0"
 port = 8000
-http_server = wsgiserver.WSGIServer(host=host, port=port, wsgi_app=app)
-http_server.start()
+app.run(host=host, port=port)
+# http_server = wsgiserver.WSGIServer(host=host, port=port, wsgi_app=app)
+# http_server.start()
+
 
