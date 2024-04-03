@@ -58,6 +58,7 @@ def gen_frames_only():
 
 def gen_frames(camera):
     while True:
+        time.sleep(0.1)
         success, image = camera.read()
         if not success:
             print("not success")
@@ -94,9 +95,9 @@ def stream2():
     return "ERROR"
 
 
-
-camgrab = threading.Thread(target=lambda: gen_frames_only())
-camgrab.start()
+#
+# camgrab = threading.Thread(target=lambda: gen_frames_only())
+# camgrab.start()
 
 
 host = "0.0.0.0"
