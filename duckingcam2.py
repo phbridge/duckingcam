@@ -29,12 +29,12 @@ backup = [bytes(), bytes(), bytes()]
 
 def read_frames(camera):
     while True:
-        time.sleep(0.066)
+        time.sleep(0.1)
         success, image = camera.retrieve()
         if not success:
             print("not success")
         else:
-            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 95]
+            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
             # ret, buffer = cv2.imencode('.jpg', image)
             ret, buffer = cv2.imencode('.jpg', image, encode_param)
             image = buffer.tobytes()
