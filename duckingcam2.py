@@ -2,11 +2,12 @@ from flask import Flask, render_template, Response
 import cv2
 import wsgiserver
 
-camera0 = cv2.VideoCapture(0)
+camera0 = cv2.VideoCapture(0, cv2.CAP_GSTREAMER)
 camera0.release()
-camera2 = cv2.VideoCapture(2)
+camera2 = cv2.VideoCapture(2, cv2.CAP_GSTREAMER)
 camera2.release()
 
+cv2.VideoWriter()
 app = Flask('hello')
 
 backup = [bytes(), bytes(), bytes()]
@@ -31,7 +32,7 @@ def read_frames(camera):
         if not success:
             print("not success")
         else:
-            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 95]
+            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
             # ret, buffer = cv2.imencode('.jpg', image)
             ret, buffer = cv2.imencode('.jpg', image, encode_param)
             image = buffer.tobytes()
