@@ -49,6 +49,8 @@ def gen_frames(camera):
 
 
 def gen_always():
+    global camera0
+    global camera2
     while True:
         camera0.open(0)
         camera2.open(0)
