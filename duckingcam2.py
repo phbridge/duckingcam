@@ -41,7 +41,7 @@ def gen_frames(camera):
 def stream0():
     print(camera0.isOpened())
     if camera0.isOpened():
-        return Response(gen_frames(camera=camera0), mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(read_frames(camera=camera0), mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         camera0.open(0)
         return Response(gen_frames(camera=camera0), mimetype='multipart/x-mixed-replace; boundary=frame')
