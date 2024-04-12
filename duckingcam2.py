@@ -22,6 +22,7 @@ def _gen_frames(_camera):
             print("not success read")
         else:
             encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
+            image = cv2.rotate(image, 180)
             ret, buffer = cv2.imencode('.jpg', image, encode_param)
             image = buffer.tobytes()
             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + image + b'\r\n')
