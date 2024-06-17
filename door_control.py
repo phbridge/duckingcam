@@ -4,6 +4,7 @@ import wsgiserver
 import time
 
 import paho.mqtt.client as mqtt
+import paho
 import json
 
 app = Flask('hello')
@@ -16,6 +17,7 @@ MQTT_PASSWORD = "energymonitoring"
 
 @app.route('/door_open')
 def door_open():
+    print("duckdoor open requested")
     # def on_connect(client, userdata, flags, rc):
     #     client.subscribe("zigbee2mqtt/bridge/request/device/options")
 
@@ -26,7 +28,7 @@ def door_open():
     #     """Return current time string for mqtt messages."""
     #     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     duckdoor = "zigbee2mqtt/0x00124b0029ded58f/set"
-    mqttc = mqtt.Client()
+    mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
     mqttc.connect(MQTT_BROKER_URL)
     duckdoor_ = {
         "state": "CLOSE"
@@ -41,6 +43,7 @@ def door_open():
 
 @app.route('/door_close')
 def door_close():
+    print("duckdoor close requested")
     # def on_connect(client, userdata, flags, rc):
     #     client.subscribe("zigbee2mqtt/bridge/request/device/options")
 
@@ -51,7 +54,8 @@ def door_close():
     #     """Return current time string for mqtt messages."""
     #     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     duckdoor = "zigbee2mqtt/0x00124b0029ded58f/set"
-    mqttc = mqtt.Client()
+    # mqttc = mqtt.Client()
+    mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
     mqttc.connect(MQTT_BROKER_URL)
     duckdoor_ = {
         "state": "OPEN"
