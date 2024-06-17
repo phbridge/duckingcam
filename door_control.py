@@ -27,7 +27,7 @@ def door_open():
     # def _mqtt_time():
     #     """Return current time string for mqtt messages."""
     #     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-    duckdoor = "zigbee2mqtt/0x00124b0029ded58f/set"
+    duckdoor = "zigbee2mqtt/Curtains/DuckDoor/set"
     # mqttc = mqtt.Client()
     mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
     mqttc.connect(MQTT_BROKER_URL)
@@ -54,7 +54,7 @@ def door_close():
     # def _mqtt_time():
     #     """Return current time string for mqtt messages."""
     #     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-    duckdoor = "zigbee2mqtt/0x00124b0029ded58f/set"
+    duckdoor = "zigbee2mqtt/Curtains/DuckDoor/set"
     # mqttc = mqtt.Client()
     mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
     mqttc.connect(MQTT_BROKER_URL)
