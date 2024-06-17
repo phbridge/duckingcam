@@ -28,6 +28,7 @@ def door_open():
     #     """Return current time string for mqtt messages."""
     #     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     duckdoor = "zigbee2mqtt/0x00124b0029ded58f/set"
+    # mqttc = mqtt.Client()
     mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
     mqttc.connect(MQTT_BROKER_URL)
     duckdoor_ = {
