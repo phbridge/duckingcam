@@ -124,6 +124,7 @@ def master_timer_sunset():
         first_run = False
         t = datetime.today().astimezone(tz=pytz.timezone("Europe/London"))
         future = SUN.setwhere(date=datetime.today(), elsewhere="Europe/London")
+        future += timedelta(hours=3)
         # future = SUN.setwhere(date=datetime.today())
         function_logger.info("sunset sleeping for %s" % (future - t).seconds)
         if (future - t).seconds < 1:
