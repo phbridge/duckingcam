@@ -36,7 +36,8 @@ def door_open():
     function_logger = logger.getChild("%s.%s.%s" % (inspect.stack()[2][3], inspect.stack()[1][3], inspect.stack()[0][3]))
     function_logger.info("duckdoor open requested")
     duckdoor = "zigbee2mqtt/Curtains/DuckDoor/set"
-    mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+    # mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+    mqttc = mqtt.Client()
     mqttc.connect(MQTT_BROKER_URL)
     duckdoor_ = {
         "state": "CLOSE"
@@ -56,7 +57,8 @@ def door_close():
     function_logger = logger.getChild("%s.%s.%s" % (inspect.stack()[2][3], inspect.stack()[1][3], inspect.stack()[0][3]))
     function_logger.info("duckdoor close requested")
     duckdoor = "zigbee2mqtt/Curtains/DuckDoor/set"
-    mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+    # mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+    mqttc = mqtt.Client()
     mqttc.connect(MQTT_BROKER_URL)
     duckdoor_ = {
         "state": "OPEN"
