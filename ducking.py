@@ -97,8 +97,9 @@ def master_timer_sunrise():
                 function_logger.error("Unexpected error:" + str(e))
                 function_logger.error("TRACEBACK=" + str(traceback.format_exc()))
         first_run = False
-        t = datetime.today()
-        future = SUN.risewhere(date=datetime.today(), elsewhere="Europe/London")
+        t = datetime.today().astimezone()
+        # future = SUN.risewhere(date=datetime.today(), elsewhere="Europe/London")
+        future = SUN.risewhere(date=datetime.today())
         function_logger.info("sunrise sleeping for %s" % (future - t).seconds)
         if (future - t).seconds < 1:
             future += timedelta(days=1)
@@ -121,8 +122,9 @@ def master_timer_sunset():
                 function_logger.error("Unexpected error:" + str(e))
                 function_logger.error("TRACEBACK=" + str(traceback.format_exc()))
         first_run = False
-        t = datetime.today()
-        future = SUN.setwhere(date=datetime.today(), elsewhere="Europe/London")
+        t = datetime.today().astimezone()
+        # future = SUN.setwhere(date=datetime.today(), elsewhere="Europe/London")
+        future = SUN.setwhere(date=datetime.today())
         function_logger.info("sunset sleeping for %s" % (future - t).seconds)
         if (future - t).seconds < 1:
             future += timedelta(days=1)
