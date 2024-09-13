@@ -167,12 +167,11 @@ if __name__ == "__main__":
     master_timer_sunrise_thread = threading.Thread(target=lambda: master_timer_sunrise())
     master_timer_sunrise_thread.start()
     master_timer_sunset_thread = threading.Thread(target=lambda: master_timer_sunset())
-    master_timer_sunset_thread.start()
+    # master_timer_sunset_thread.start() # disabling the subset section of this code for now.
 
 
 
-
-host = "0.0.0.0"
+host = "::"
 port = 8888
 # app.run(host=host, port=port)
 # http_server = wsgiserver.WSGIServer(host=host, port=port, wsgi_app=app, certfile=, keyfile=)
